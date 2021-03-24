@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="image_only_show" format="boolean"/>
+    <attr name="image_span_count" format="integer"/>
+    <attr name="image_layout_show_normal" format="reference"/>
+    <attr name="image_type" format="enum">
+        <enum name="Images" value="0"/>
+        <enum name="Videos" value="1"/>
+        <enum name="ALL" value="2"/>
+    </attr>
+
+    <eat-comment />
+
+    <declare-styleable name="ImageSelectView">
+        <attr name="image_type"/>
+        <attr name="image_only_show"/>
+        <attr name="image_span_count"/>
+        <attr name="image_layout_show_normal"/>
+        <attr name="image_max_count" format="integer"/>
+        <attr name="image_layout_select_add" format="reference"/>
+        <attr name="image_layout_select_normal" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ImageShowView">
+        <attr name="image_span_count"/>
+        <attr name="image_layout_show_normal"/>
+    </declare-styleable>
+</resources>

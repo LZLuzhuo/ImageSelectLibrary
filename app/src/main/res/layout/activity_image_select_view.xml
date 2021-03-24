@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <me.luzhuo.lib_image_select.ImageSelectView
+        android:id="@+id/image1"
+        app:image_type="ALL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:image_layout_select_add="@layout/image_item_select_add"
+        app:image_layout_select_normal="@layout/image_item_select_normal"/>
+
+    <me.luzhuo.lib_image_select.ImageSelectView
+        android:id="@+id/image2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <me.luzhuo.lib_image_select.ImageSelectView
+        android:id="@+id/image3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:image_only_show="true"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

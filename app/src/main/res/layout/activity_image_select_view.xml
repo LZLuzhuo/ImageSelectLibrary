@@ -7,11 +7,13 @@
 
     <me.luzhuo.lib_image_select.ImageSelectView
         android:id="@+id/image1"
-        app:image_type="ALL"
+        app:image_flags="Images|Videos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:image_layout_select_add="@layout/image_item_select_add"
-        app:image_layout_select_normal="@layout/image_item_select_normal"/>
+        app:image_is_original="true"
+        app:image_show_camera="true"
+        app:image_layout_select_add="@layout/my_image_add"
+        app:image_layout_select_normal="@layout/my_image_normal"/>
 
     <me.luzhuo.lib_image_select.ImageSelectView
         android:id="@+id/image2"

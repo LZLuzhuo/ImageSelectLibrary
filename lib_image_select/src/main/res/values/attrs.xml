@@ -8,14 +8,22 @@
         <enum name="Videos" value="1"/>
         <enum name="ALL" value="2"/>
     </attr>
+    <attr name="image_flags" format="flags">
+        <flag name="Images" value="2"/>
+        <flag name="Videos" value="4"/>
+        <flag name="Gif" value="8"/>
+        <flag name="Audio" value="16"/>
+    </attr>
 
     <eat-comment />
 
     <declare-styleable name="ImageSelectView">
-        <attr name="image_type"/>
+        <attr name="image_flags"/>
         <attr name="image_only_show"/>
         <attr name="image_span_count"/>
         <attr name="image_layout_show_normal"/>
+        <attr name="image_is_original" format="boolean"/>
+        <attr name="image_show_camera" format="boolean"/>
         <attr name="image_max_count" format="integer"/>
         <attr name="image_layout_select_add" format="reference"/>
         <attr name="image_layout_select_normal" format="reference"/>

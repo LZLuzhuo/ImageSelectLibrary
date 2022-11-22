@@ -2,7 +2,7 @@
 
 buildscript {
     repositories {
-        maven{ url 'http://code.luzhuo.me:8081/repository/android-public/' }
+        maven{ url 'http://code.luzhuo.me' }
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
@@ -17,7 +17,7 @@ buildscript {
 
 allprojects {
     repositories {
-        maven{ url 'http://code.luzhuo.me:8081/repository/android-public/' }
+        maven{ url 'http://code.luzhuo.me' }
         google()
         jcenter()
         maven { url 'https://jitpack.io' }

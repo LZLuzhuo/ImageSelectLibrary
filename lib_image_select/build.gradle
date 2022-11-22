@@ -26,15 +26,16 @@ dependencies {
     compileOnly 'com.github.bumptech.glide:glide:4.10.0'
     compileOnly 'androidx.constraintlayout:constraintlayout:2.0.4'
     compileOnly 'com.google.android.material:material:1.2.1'
+    compileOnly 'me.luzhuo.android:lib_core:2.5.82-SNAPSHOT'
 
     // 最低版本要求19
     // 自动获取6.0权限
-    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.1'
     implementation 'com.github.SherlockGougou:BigImageViewPager:androidx-6.0.1'
 
-    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:3.2.6'
-    implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:3.2.6'
-    implementation 'com.github.dueeeke.dkplayer:videocache:3.2.6'
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.5'
+    implementation 'xyz.doikki.android.dkplayer:videocache:3.3.5'
+    implementation "xyz.doikki.android.dkplayer:dkplayer-ui:3.3.5"
 }
 
 apply from: 'maven.gradle'

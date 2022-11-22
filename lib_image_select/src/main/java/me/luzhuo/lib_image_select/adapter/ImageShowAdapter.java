@@ -53,7 +53,7 @@ public class ImageShowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public ImageShowAdapter(@LayoutRes int layout_show) {
-        this.layout_show = layout_show;
+        this.layout_show = layout_show == -1 ? R.layout.image_item_select_show : layout_show;
     }
 
     @Override

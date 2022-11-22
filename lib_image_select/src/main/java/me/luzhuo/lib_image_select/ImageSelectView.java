@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import me.luzhuo.lib_image_select.adapter.ImageSelectAdapter;
+import me.luzhuo.lib_image_select.adapter.ImageSelectWithFlagsAdapter;
 import me.luzhuo.lib_image_select.adapter.ImageShowAdapter;
 import me.luzhuo.lib_image_select.bean.ImageSelectBean;
 import me.luzhuo.lib_image_select.callback.OnImageSelectCallback;
@@ -64,8 +65,10 @@ public class ImageSelectView extends RecyclerView implements OnImageShowCallback
         final Activity activity = (Activity) getContext();
         int spanCount = 3;
         int maxCount = 9;
-        Type type = Type.Images;
+        int flags = 0x02;
         boolean onlyShow = false;
+        boolean isOriginal = false;
+        boolean showCamera = false;
         int layout_select_add;
         int layout_select_normal;
         int layout_show_normal;
@@ -73,26 +76,22 @@ public class ImageSelectView extends RecyclerView implements OnImageShowCallback
         try {
             spanCount = typedArray.getInt(R.styleable.ImageSelectView_image_span_count, 3);
             maxCount = typedArray.getInt(R.styleable.ImageSelectView_image_max_count, 9);
-            int typeInt = typedArray.getInt(R.styleable.ImageSelectView_image_type, 0);
+            flags = typedArray.getInt(R.styleable.ImageSelectView_image_flags, 0x02);
             onlyShow = typedArray.getBoolean(R.styleable.ImageSelectView_image_only_show, false);
+            isOriginal = typedArray.getBoolean(R.styleable.ImageSelectView_image_is_original, false);
+            showCamera = typedArray.getBoolean(R.styleable.ImageSelectView_image_show_camera, false);
             layout_select_add = typedArray.getResourceId(R.styleable.ImageSelectView_image_layout_select_add, -1);
             layout_select_normal = typedArray.getResourceId(R.styleable.ImageSelectView_image_layout_select_normal, -1);
             layout_show_normal = typedArray.getResourceId(R.styleable.ImageSelectView_image_layout_show_normal, -1);
-
-            if (typeInt == 0) type = Type.Images;
-            else if (typeInt == 1) type = Type.Videos;
-            else if (typeInt == 2) type = Type.ALL;
 
         } finally {
             typedArray.recycle();
         }
 
         if (onlyShow) {
-            if (layout_show_normal > 0) adapter = new ImageShowAdapter(layout_show_normal);
-            else adapter = new ImageShowAdapter();
+            adapter = new ImageShowAdapter(layout_show_normal);
         } else {
-            if (layout_select_add > 0 && layout_select_normal > 0) adapter = new ImageSelectAdapter(activity, type, maxCount, layout_select_add, layout_select_normal);
-            else adapter = new ImageSelectAdapter(activity, type, maxCount);
+            adapter = new ImageSelectWithFlagsAdapter(activity, flags, maxCount, layout_select_add, layout_select_normal, isOriginal, showCamera);
         }
         this.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         this.setAdapter(adapter);

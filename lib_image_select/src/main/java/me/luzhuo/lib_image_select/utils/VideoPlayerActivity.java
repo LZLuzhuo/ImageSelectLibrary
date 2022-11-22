@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,12 +27,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.dueeeke.videocontroller.StandardVideoController;
-import com.dueeeke.videocontroller.component.CompleteView;
-import com.dueeeke.videocontroller.component.ErrorView;
-import com.dueeeke.videocontroller.component.PrepareView;
-import com.dueeeke.videocontroller.component.VodControlView;
+import xyz.doikki.videocontroller.StandardVideoController;
+import xyz.doikki.videocontroller.component.CompleteView;
+import xyz.doikki.videocontroller.component.ErrorView;
+import xyz.doikki.videocontroller.component.PrepareView;
+import xyz.doikki.videocontroller.component.VodControlView;
 
+import me.luzhuo.lib_core.ui.calculation.UICalculation;
 import me.luzhuo.lib_image_select.R;
 
 /**
@@ -59,6 +61,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         mVideoView = findViewById(R.id.player);
         video_return = findViewById(R.id.video_return);
+        int statusBarHeight = new UICalculation(this).getStatusBarHeight(video_return);
+        ((ViewGroup.MarginLayoutParams) video_return.getLayoutParams()).topMargin = statusBarHeight;
 
         initVideoView();
 

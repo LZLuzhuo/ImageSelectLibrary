@@ -21,17 +21,17 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dueeeke.videoplayer.controller.BaseVideoController;
-import com.dueeeke.videoplayer.controller.MediaPlayerControl;
-import com.dueeeke.videoplayer.player.AbstractPlayer;
-import com.dueeeke.videoplayer.player.PlayerFactory;
-import com.dueeeke.videoplayer.player.ProgressManager;
-import com.dueeeke.videoplayer.player.VideoViewConfig;
-import com.dueeeke.videoplayer.player.VideoViewManager;
-import com.dueeeke.videoplayer.render.IRenderView;
-import com.dueeeke.videoplayer.render.RenderViewFactory;
-import com.dueeeke.videoplayer.util.L;
-import com.dueeeke.videoplayer.util.PlayerUtils;
+import xyz.doikki.videoplayer.controller.BaseVideoController;
+import xyz.doikki.videoplayer.controller.MediaPlayerControl;
+import xyz.doikki.videoplayer.player.AbstractPlayer;
+import xyz.doikki.videoplayer.player.PlayerFactory;
+import xyz.doikki.videoplayer.player.ProgressManager;
+import xyz.doikki.videoplayer.player.VideoViewConfig;
+import xyz.doikki.videoplayer.player.VideoViewManager;
+import xyz.doikki.videoplayer.render.IRenderView;
+import xyz.doikki.videoplayer.render.RenderViewFactory;
+import xyz.doikki.videoplayer.util.L;
+import xyz.doikki.videoplayer.util.PlayerUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -149,11 +149,11 @@ public class VideoView<P extends AbstractPlayer> extends FrameLayout
         mRenderViewFactory = config.mRenderViewFactory;
 
         //读取xml中的配置，并综合全局配置
-        TypedArray a = context.obtainStyledAttributes(attrs, com.dueeeke.videoplayer.R.styleable.VideoView);
-        mEnableAudioFocus = a.getBoolean(com.dueeeke.videoplayer.R.styleable.VideoView_enableAudioFocus, mEnableAudioFocus);
-        mIsLooping = a.getBoolean(com.dueeeke.videoplayer.R.styleable.VideoView_looping, false);
-        mCurrentScreenScaleType = a.getInt(com.dueeeke.videoplayer.R.styleable.VideoView_screenScaleType, mCurrentScreenScaleType);
-        mPlayerBackgroundColor = a.getColor(com.dueeeke.videoplayer.R.styleable.VideoView_playerBackgroundColor, Color.BLACK);
+        TypedArray a = context.obtainStyledAttributes(attrs, xyz.doikki.videoplayer.R.styleable.VideoView);
+        mEnableAudioFocus = a.getBoolean(xyz.doikki.videoplayer.R.styleable.VideoView_enableAudioFocus, mEnableAudioFocus);
+        mIsLooping = a.getBoolean(xyz.doikki.videoplayer.R.styleable.VideoView_looping, false);
+        mCurrentScreenScaleType = a.getInt(xyz.doikki.videoplayer.R.styleable.VideoView_screenScaleType, mCurrentScreenScaleType);
+        mPlayerBackgroundColor = a.getColor(xyz.doikki.videoplayer.R.styleable.VideoView_playerBackgroundColor, Color.BLACK);
         a.recycle();
 
         initView();
@@ -549,7 +549,7 @@ public class VideoView<P extends AbstractPlayer> extends FrameLayout
             case AbstractPlayer.MEDIA_INFO_BUFFERING_END:
                 setPlayState(STATE_BUFFERED);
                 break;
-            case AbstractPlayer.MEDIA_INFO_VIDEO_RENDERING_START: // 视频开始渲染
+            case AbstractPlayer.MEDIA_INFO_RENDERING_START: // 视频开始渲染
                 setPlayState(STATE_PLAYING);
                 if (mPlayerContainer.getWindowVisibility() != VISIBLE) {
                     pause();

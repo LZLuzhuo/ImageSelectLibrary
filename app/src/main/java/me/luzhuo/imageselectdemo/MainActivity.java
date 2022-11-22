@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-//        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, new ImageSelectViewFragment()).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, new ImageShowViewFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, new ImageSelectViewFragment()).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, new ImageShowViewFragment()).commit();
     }
 
     public void onClick(View view) {

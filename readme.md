@@ -1,9 +1,9 @@
-图片选择库申请库
+图片选择库(已废弃)
 
 # 1. 导包
 
 ```groovy
-implementation 'me.luzhuo.android:lib_image_select:1.1.16-SNAPSHOT'
+implementation 'me.luzhuo.android:lib_image_select:1.2.3-SNAPSHOT'
 
 implementation 'androidx.appcompat:appcompat:1.2.0'
 implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

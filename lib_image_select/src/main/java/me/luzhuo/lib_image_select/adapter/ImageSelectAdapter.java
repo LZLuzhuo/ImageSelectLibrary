@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.luzhuo.lib_core.ui.toast.ToastManager;
 import me.luzhuo.lib_image_select.utils.ImageSelectManager;
 import me.luzhuo.lib_image_select.R;
 import me.luzhuo.lib_image_select.bean.ImageSelectBean;
@@ -47,42 +48,48 @@ import me.luzhuo.lib_image_select.enums.Type;
  * @Copyright: Copyright 2020 Luzhuo. All rights reserved.
  **/
 public class ImageSelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SelectCallBack {
-    private Context context;
-    private List<ImageSelectBean> mDatas = new ArrayList<>();
-    private static final int TYPE_NOMAL = 1, TYPE_ADD = 2;
-    private Type type;
-    private ImageSelectManager select;
-    private int maxCount;
-    private int layout_add;
-    private int layout_nomal;
+    protected Context context;
+    protected List<ImageSelectBean> mDatas = new ArrayList<>();
+    protected static final int TYPE_NOMAL = 1, TYPE_ADD = 2;
+    protected Type type;
+    protected ImageSelectManager select;
+    protected int maxCount;
+    protected boolean showCamera;
 
-    private OnImageShowCallback callback;
-    private OnImageSelectCallback adapterSelectListener;
+    protected int layout_add;
+    protected int layout_nomal;
+    protected static final int default_add_layout = R.layout.image_item_select_add;
+    protected static final int default_nomal_layout = R.layout.image_item_select_normal;
+
+    protected OnImageShowCallback callback;
+    protected OnImageSelectCallback adapterSelectListener;
 
     public ImageSelectAdapter(Activity activity, Type type, int maxCount) {
-        this(activity, type, maxCount, R.layout.image_item_select_add, R.layout.image_item_select_normal);
+        this(activity, type, maxCount, default_add_layout, default_nomal_layout, false, false);
     }
 
-    public ImageSelectAdapter(Activity activity, Type type, int maxCount, @LayoutRes int layout_add, @LayoutRes int layout_nomal) {
+    public ImageSelectAdapter(Activity activity, Type type, int maxCount, @LayoutRes int layout_add, @LayoutRes int layout_nomal, boolean isOriginal, boolean showCamera) {
         this.context = activity.getBaseContext();
         this.type = type;
         this.maxCount = maxCount;
-        this.layout_add = layout_add;
-        this.layout_nomal = layout_nomal;
-        this.select = new ImageSelectManager(activity).original(true).onSetCallbackListener(this);
+        this.layout_add = layout_add == -1 ? R.layout.image_item_select_add : layout_add;
+        this.layout_nomal = layout_nomal == -1 ? R.layout.image_item_select_normal : layout_nomal;
+        this.select = new ImageSelectManager(activity).original(isOriginal).onSetCallbackListener(this);
+        this.showCamera = showCamera;
     }
 
     public ImageSelectAdapter(Fragment fragment, Type type, int maxCount) {
-        this(fragment, type, maxCount, R.layout.image_item_select_add, R.layout.image_item_select_normal);
+        this(fragment, type, maxCount, default_add_layout, default_nomal_layout, false, false);
     }
 
-    public ImageSelectAdapter(Fragment fragment, Type type, int maxCount, @LayoutRes int layout_add, @LayoutRes int layout_nomal) {
+    public ImageSelectAdapter(Fragment fragment, Type type, int maxCount, @LayoutRes int layout_add, @LayoutRes int layout_nomal, boolean isOriginal, boolean showCamera) {
         this.context = fragment.getContext();
         this.type = type;
         this.maxCount = maxCount;
         this.layout_add = layout_add;
         this.layout_nomal = layout_nomal;
-        this.select = new ImageSelectManager(fragment).original(true).onSetCallbackListener(this);
+        this.select = new ImageSelectManager(fragment).original(isOriginal).onSetCallbackListener(this);
+        this.showCamera = showCamera;
     }
 
     public List<ImageSelectBean> getDatas(){
@@ -130,7 +137,7 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class AddHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    protected class AddHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView image_select_type_content;
         public View image_select_btn;
 
@@ -143,6 +150,8 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bindData() {
+            if (layout_add != default_add_layout) return; // 如果不是默认布局, 就不去修改文本内容了
+
             if (type == Type.Images) image_select_type_content.setText("上传图片");
             else if (type == Type.Videos) image_select_type_content.setText("上传视频");
             else if (type == Type.ALL) image_select_type_content.setText("上传文件");
@@ -151,9 +160,9 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View v) {
             if(v.getId() == R.id.image_select_btn) {
-                if (type == Type.Images) select.openImage(maxCount - mDatas.size());
-                else if (type == Type.Videos) select.openVideo(maxCount - mDatas.size());
-                else if (type == Type.ALL) select.openAll(maxCount - mDatas.size());
+                if (type == Type.Images) select.openImage(maxCount - mDatas.size(), showCamera);
+                else if (type == Type.Videos) select.openVideo(maxCount - mDatas.size(), showCamera);
+                else if (type == Type.ALL) select.openAll(maxCount - mDatas.size(), showCamera);
             }
         }
     }
@@ -169,7 +178,7 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onCancel() { }
 
-    private class NomalHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    protected class NomalHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView image_select_delete;
         public ImageView image_select_iv;
         public ImageView image_select_play;

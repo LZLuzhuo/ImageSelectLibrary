@@ -45,7 +45,7 @@ public class ImageSelectViewFragment extends Fragment {
             @Override
             public boolean onImageCallback(ImageSelectBean image, List<ImageSelectBean> images) {
                 Toast.makeText(requireContext(), "用自己的图片展示控件", Toast.LENGTH_SHORT).show();
-                return true;
+                return false;
             }
         });
     }

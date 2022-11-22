@@ -29,6 +29,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.luzhuo.lib_core.math.bit.BitFilter;
 import me.luzhuo.lib_image_select.bean.ImageSelectBean;
 import me.luzhuo.lib_image_select.callback.SelectCallBack;
 import me.luzhuo.lib_image_select.enums.Type;
@@ -79,7 +80,7 @@ public class ImageSelectManager {
      * 选择头像的图片
      * 单图片选择 + 圆形裁图
      */
-    public void openHeaderImage(){
+    public void openHeaderImage(boolean showCamera){
         getEngin()
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
@@ -98,7 +99,7 @@ public class ImageSelectManager {
                 .isPreviewImage(true)// 是否可预览图片
                 .isPreviewVideo(true)// 是否可预览视频
                 .isEnablePreviewAudio(true) // 是否可播放音频
-                .isCamera(false)// 是否显示拍照按钮
+                .isCamera(showCamera)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .isEnableCrop(true)// 是否裁剪
                 .isCompress(true)// 是否压缩
@@ -112,10 +113,14 @@ public class ImageSelectManager {
                 .forResult(new MyResultCallback(callBack));
     }
 
+    public void openHeaderImage(){
+        openHeaderImage(false);
+    }
+
     /**
      * 选择的图片会压缩之后返回
      */
-    public void openImage(int maxCount){
+    public void openImage(int maxCount, boolean showCamera){
         getEngin()
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
@@ -134,7 +139,7 @@ public class ImageSelectManager {
                 .isSingleDirectReturn(true)// 单选模式下是否直接返回，PictureConfig.SINGLE模式下有效
                 .isPreviewImage(true)// 是否可预览图片
                 .isPreviewVideo(true)// 是否可预览视频
-                .isCamera(false)// 是否显示拍照按钮
+                .isCamera(showCamera)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .isEnableCrop(false)// 是否裁剪
                 .isCompress(true)// 是否压缩
@@ -145,10 +150,65 @@ public class ImageSelectManager {
                 .forResult(new MyResultCallback(callBack));
     }
 
+    public void openImage(int maxCount){
+        openImage(maxCount, false);
+    }
+
+    private BitFilter bit = new BitFilter();
+    public static final int Images = 0x02;
+    public static final int Videos = 0x04;
+    public static final int Gif = 0x08;
+    public static final int Audio = 0x10;
+    /**
+     * 根据标记选择类型
+     */
+    public void openMediaWithFlags(int flags, int maxCount, boolean showCamera) {
+        int gallery = PictureMimeType.ofAll();
+        if (bit.check(flags, 1) && bit.check(flags, 2)) gallery = PictureMimeType.ofAll(); // Images|Videos
+        else if (Images == flags) gallery = PictureMimeType.ofImage();
+        else if (Videos == flags) gallery = PictureMimeType.ofVideo();
+        else if (Gif == flags) gallery = PictureMimeType.ofImage();
+        else if ((Images|Gif) == flags) gallery = PictureMimeType.ofImage();
+        else if (Audio == flags) gallery = PictureMimeType.ofAudio();
+
+        getEngin()
+                .openGallery(gallery)
+                .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
+                .isWeChatStyle(true)// 是否开启微信图片选择风格
+                .isUseCustomCamera(true)// 是否使用自定义相机
+                .isPageStrategy(true)// 是否开启分页策略 & 每页多少条；默认开启
+                .isWithVideoImage(true)// 图片和视频是否可以同选,只在ofAll模式下有效
+                .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
+                .maxSelectNum(maxCount)// 最大图片选择数量
+                .maxVideoSelectNum(maxCount)
+                .minSelectNum(0)// 最小选择数量
+                .imageSpanCount(4)// 每行显示个数
+                .isReturnEmpty(false)// 未选择数据时点击按钮是否可以返回
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)// 设置相册Activity方向，不设置默认使用系统
+                .isOriginalImageControl(original)// 是否显示原图控制按钮，如果设置为true则用户可以自由选择是否使用原图，压缩、裁剪功能将会失效
+                .selectionMode(maxCount <= 1 ? PictureConfig.SINGLE : PictureConfig.MULTIPLE)// 多选 or 单选
+                .isSingleDirectReturn(true)// 单选模式下是否直接返回，PictureConfig.SINGLE模式下有效
+                .isPreviewImage(true)// 是否可预览图片
+                .isPreviewVideo(true)// 是否可预览视频
+                .isCamera(showCamera)// 是否显示拍照按钮
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .isEnableCrop(false)// 是否裁剪
+                .isCompress(true)// 是否压缩
+                //.compressQuality(80)// 图片压缩后输出质量 0~ 100
+                .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                .isGif(bit.check(Gif, 3))
+                .minimumCompressSize(100)
+                .forResult(new MyResultCallback(callBack));
+    }
+
+    public void openMediaWithFlags(int flags, int maxCount) {
+        openMediaWithFlags(flags, maxCount, false);
+    }
+
     /**
      * 选择的视频不具有压缩功能
      */
-    public void openVideo(int maxCount){
+    public void openVideo(int maxCount, boolean showCamera){
         getEngin()
                 .openGallery(PictureMimeType.ofVideo())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
@@ -167,7 +227,7 @@ public class ImageSelectManager {
                 .isSingleDirectReturn(true)// 单选模式下是否直接返回，PictureConfig.SINGLE模式下有效
                 .isPreviewImage(true)// 是否可预览图片
                 .isPreviewVideo(true)// 是否可预览视频
-                .isCamera(false)// 是否显示拍照按钮
+                .isCamera(showCamera)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .isEnableCrop(false)// 是否裁剪
                 .isCompress(true)// 是否压缩
@@ -179,10 +239,14 @@ public class ImageSelectManager {
                 .forResult(new MyResultCallback(callBack));
     }
 
+    public void openVideo(int maxCount){
+        openVideo(maxCount, false);
+    }
+
     /**
      * 只支持选择图片 视频 音频
      */
-    public void openAll(int maxCount){
+    public void openAll(int maxCount, boolean showCamera){
         getEngin()
                 .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
@@ -204,7 +268,7 @@ public class ImageSelectManager {
                 .isPreviewVideo(true)// 是否可预览视频
                 //.querySpecifiedFormatSuffix(PictureMimeType.ofJPEG())// 查询指定后缀格式资源
                 .isEnablePreviewAudio(true) // 是否可播放音频
-                .isCamera(false)// 是否显示拍照按钮
+                .isCamera(showCamera)// 是否显示拍照按钮
                 //.isMultipleSkipCrop(false)// 多图裁剪时是否支持跳过，默认支持
                 //.isMultipleRecyclerAnimation(false)// 多图裁剪底部列表显示动画效果
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
@@ -218,6 +282,10 @@ public class ImageSelectManager {
                 .cutOutQuality(90)// 裁剪输出质量 默认100
                 .minimumCompressSize(100)// 小于多少kb的图片不压缩
                 .forResult(new MyResultCallback(callBack));
+    }
+
+    public void openAll(int maxCount){
+        openAll(maxCount, false);
     }
 
     static class MyResultCallback implements OnResultCallbackListener<LocalMedia> {
